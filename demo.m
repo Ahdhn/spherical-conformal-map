@@ -21,14 +21,11 @@
 %
 % Copyright (c) 2013-2018, Gary Pui-Tung Choi
 % https://scholar.harvard.edu/choi
-clear all;
-close all;
 
 addpath('mfile')
 
 %% Example 1: David
-[v, f] = readOBJ('davidhead.obj');
-%load('david.mat')
+load('david.mat')
 
 plot_mesh(v,f); view([-130 0])
 
@@ -36,76 +33,35 @@ map = spherical_conformal_map(v,f);
 
 plot_mesh(map,f); 
 
-writeOBJ('davidhead_sph.obj', map, f)
-
 % evaluate the angle distortion
-%angle_distortion(v,f,map);
+angle_distortion(v,f,map);
 
 %% Example 2: Chinese lion
-%load('lion.mat')
+load('lion.mat')
 % plot_mesh(v,f);
 % can also include the third input if an additional quantity is defined on vertices
-%plot_mesh(v,f,mean_curv);
+plot_mesh(v,f,mean_curv);
 
-%map = spherical_conformal_map(v,f);
+map = spherical_conformal_map(v,f);
 
 % plot_mesh(map,f); view([-70 0])
 % can also include the third input if an additional quantity is defined on vertices
-%plot_mesh(map,f,mean_curv); view([-70 0])
-   
+plot_mesh(map,f,mean_curv); view([-70 0])
+
 % evaluate the angle distortion
-%angle_distortion(v,f,map);
+angle_distortion(v,f,map);
 
 %% Example 3: Brain
-%load('brain.mat')
+load('brain.mat')
 % plot_mesh(v,f); view([90 0])
 % can also include the third input if an additional quantity is defined on vertices
-%plot_mesh(v,f,mean_curv); view([90 0]); 
+plot_mesh(v,f,mean_curv); view([90 0]); 
 
-%map = spherical_conformal_map(v,f);
+map = spherical_conformal_map(v,f);
 
 % plot_mesh(map,f); view([-30 0]);
 % can also include the third input if an additional quantity is defined on vertices
-%plot_mesh(map,f,mean_curv); 
-%view([-30 0]);
+plot_mesh(map,f,mean_curv); view([-30 0]);
 
 % evaluate the angle distortion
-%angle_distortion(v,f,map);
-
-
-function [V, F] = readOBJ(filename)
-    fid = fopen(filename);
-    V = [];
-    F = [];
-
-    while ~feof(fid)
-        line = fgetl(fid);
-        if startsWith(line, 'v ')
-            V = [V; sscanf(line(3:end), '%f %f %f')'];
-        elseif startsWith(line, 'f ')
-            f = sscanf(line(3:end), '%d %d %d');
-            F = [F; f'];
-        end
-    end
-
-    fclose(fid);
-end
-
-function writeOBJ(filename, V, F)
-    fid = fopen(filename, 'w');
-    if fid == -1
-        error('Failed to open file: %s', filename);
-    end
-
-    % Write vertices
-    for i = 1:size(V, 1)
-        fprintf(fid, 'v %.8f %.8f %.8f\n', V(i, 1), V(i, 2), V(i, 3));
-    end
-
-    % Write faces
-    for i = 1:size(F, 1)
-        fprintf(fid, 'f %d %d %d\n', F(i, 1), F(i, 2), F(i, 3));
-    end
-
-    fclose(fid);
-end
+angle_distortion(v,f,map);
